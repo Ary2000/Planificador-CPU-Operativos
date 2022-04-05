@@ -50,15 +50,24 @@ int largoLista(){
       for (int i = 0; i < largoLista(); ++i)
       {
          if(i==pos){
+            nodo* aeliminar = aux->siguiente;
+            if(pos == largoLista()-1){
+               ultimo = aux
+               aux->siguiente = NULL
+            }
+            else{
+               aux->siguiente = aeliminar->siguiente
+            }
             int cont=1;
             while(cont<pos){
              aux = aux->siguiente;
              cont++;
             }
-
-            aux->siguiente = aux->siguiente;
+            delete(aeliminar)
+            aux = aux->siguiente;
             aux->siguiente = aux->siguiente;
          }
+         aux = aux->siguiente;
       }
 
    }
