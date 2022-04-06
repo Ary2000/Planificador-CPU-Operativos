@@ -11,16 +11,35 @@
 typedef struct{
    struct nodo* siguiente;
    char* nombre;
+   int burst;
+   int prioridad;
 
 }nodo;
 
 nodo* primero = NULL;
 nodo* ultimo = NULL;
 
-void agregar(char nombreAux[]){
+void agregar(char *datos){
    nodo* dato = malloc(sizeof(nodo)); //Inicializa el nodo
-   dato->nombre = nombreAux;
    dato->siguiente = NULL;
+   char *separador = ",";
+   char *token = strtok(datos,separador);
+   if(token != NULL){
+      dato->burst = atoi(token);
+      while (token != NULL)
+      {
+         token = strtok(NULL,separador);
+         //el error esta aqui, el token es nulo cuando no deberia serlo
+         if(token != NULL){
+            dato->prioridad = atoi(token);
+         }else{
+            dato->prioridad = 0;
+         }
+      }
+   }else{
+         dato->burst = 0;
+         dato->prioridad = 0;
+   }
 
    if(primero == NULL){
       primero = dato;
@@ -84,7 +103,8 @@ void eliminar(int pos){
 void mostrarLista(){
    nodo* i = primero;
    while(i != NULL){
-      printf("%s  \n", i->nombre);
+      printf("%i  ,", i->burst);
+      printf("%i  \n", i->prioridad);
       i = i->siguiente;
    }
 
@@ -92,13 +112,16 @@ void mostrarLista(){
 
 
 int main() {
-   agregar("Juan1");
-   agregar("Juan2");
-   agregar("Juan3");
+   agregar("1");
    mostrarLista();
+   char datos[] = "2,7";
+   agregar(datos);
+   mostrarLista();
+   //agregar("3,1");
+   /*mostrarLista();
    printf("Largo de la lista: %d\n", largoLista());
    eliminar(1);
    printf("Largo de la lista: %d\n", largoLista());
-   mostrarLista();
+   mostrarLista();*/
 	return 0;
 }
