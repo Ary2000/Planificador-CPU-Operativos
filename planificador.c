@@ -42,38 +42,44 @@ int largoLista(){
    return cont;
 }
 
-/*void eliminar(int pos){
+void eliminar(int pos){
    nodo* aux = primero;
    if(pos==0){
       primero = primero->siguiente;
+      aux->siguiente = NULL;
+      free(aux);
    }
    else{
+      nodo* prev = NULL;
       for (int i = 0; i < largoLista(); ++i)
       {
          if(i==pos){
-            nodo* aeliminar = aux->siguiente;
+            //nodo* aeliminar = aux->siguiente;
             if(pos == largoLista()-1){
-               ultimo = aux
-               aux->siguiente = NULL
+               prev->siguiente = NULL;
+               ultimo = prev;
+               //aux->siguiente = NULL;
             }
             else{
-               aux->siguiente = aeliminar->siguiente
+               prev->siguiente = aux->siguiente;
             }
             int cont=1;
-            while(cont<pos){
+            /*while(cont<pos){
              aux = aux->siguiente;
              cont++;
-            }
-            delete(aeliminar)
-            aux = aux->siguiente;
-            aux->siguiente = aux->siguiente;
+            }*/
+            aux->siguiente = NULL;
+            free(aux);
+            //aux = aux->siguiente;
+            //aux->siguiente = aux->siguiente;
          }
+         prev = aux;
          aux = aux->siguiente;
       }
 
    }
    
-}*/
+}
 
 void mostrarLista(){
    nodo* i = primero;
@@ -89,8 +95,10 @@ int main() {
    agregar("Juan1");
    agregar("Juan2");
    agregar("Juan3");
+   mostrarLista();
    printf("Largo de la lista: %d\n", largoLista());
-   //eliminar(0);
+   eliminar(1);
+   printf("Largo de la lista: %d\n", largoLista());
    mostrarLista();
 	return 0;
 }
