@@ -36,7 +36,8 @@ int largoLista(){
    int cont = 0;
    nodo* i = primero;
    while(i != NULL){
-      i = i+1;
+      cont++;
+      i = i->siguiente;
    }
    return cont;
 }
@@ -88,6 +89,7 @@ int main() {
    agregar("Juan1");
    agregar("Juan2");
    agregar("Juan3");
+   printf("Largo de la lista: %d\n", largoLista());
    //eliminar(0);
    mostrarLista();
 	return 0;
