@@ -18,6 +18,7 @@ void *run(void* arg){
             sleep(first->info[0]);
             printf("Vuelta\n");
             eliminar(0);
+
         }
     }
 }
@@ -34,5 +35,6 @@ int main(){
         printf("Thread prueba\n");
     }
     pthread_join(thread_id, NULL);
+    free(activo);
     return 0;
 }
