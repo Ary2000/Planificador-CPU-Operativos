@@ -14,7 +14,7 @@
 #include <arpa/inet.h> 
 #include <unistd.h>
 
-#define SERVER_ADDRESS  "192.168.0.21"     /* server IP */
+#define SERVER_ADDRESS  "192.168.0.15"     /* server IP */
 #define PORT            8080 
 
 /* Test sequences */
