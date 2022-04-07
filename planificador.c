@@ -10,6 +10,7 @@
 
 typedef struct{
    struct nodo* siguiente;
+   //Anadir un espacio mas para el PID
    int info[2];
 
 }nodo;

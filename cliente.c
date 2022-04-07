@@ -18,13 +18,16 @@ int isNumber(char s[]) {
     return 1;
 }
 
+// Automatico
 void* creadorProcesos() {
     int burst = rand() % (burstMayor - burstMenor) + burstMenor;
     int prioridad = rand() % 5 + 1;
-    printf("Burst: %d   Prioridad: %d\n", burst, prioridad);
     sleep(2);
+    printf("Burst: %d   Prioridad: %d\n", burst, prioridad);
+    //Aqui va el enviar mensaje
 }
 
+// Automatico
 void* creadorThreads() {
     pthread_t tid[200];
     for(int i = 0; terminarCiclo == 0; i++){
@@ -80,7 +83,8 @@ void clienteAutomatico() {
 
 // Funcion que se encarga de manegar el cliente si este selecciona leer
 // un archivo para obtener procesos
-int clienteManual(){    
+int clienteManual(){
+    //Incluir threads
     char inputUsuario[64];
     char* posicionNulo;
     printf("Insertar el nombre del archivo que desea leer: ");
@@ -115,6 +119,7 @@ int clienteManual(){
 }
 
 int main(){
+    //Crear menu de seleccion
     srand(time(NULL));
     //clienteManual();
     clienteAutomatico();
