@@ -4,15 +4,17 @@
 #include <unistd.h>
 #include "planificador.c"
 
-void *run(bool* activo){
-    while(activo){
+void *run(void* arg){
+    bool* activo = (bool *)arg;
+    while(*activo){
         printf("En el while\n");
         if(largoLista() == 0){
             sleep(1);
-            activo = false;
+            *activo = false;
         }else{
             nodo* first = getPrimero();
-            //printf("%i  ,", first->info[0]);
+            printf("%i  ,", first->info[0]);
+            printf("%i\n", first->info[1]);
             sleep(first->info[0]);
             printf("Vuelta\n");
             eliminar(0);
@@ -24,11 +26,10 @@ int main(){
     char datos[] = "2,7";
     agregar(datos);
     char datos2[] = "3,1";
-    mostrarLista();
     agregar(datos2);
     bool *activo = true;
     pthread_t thread_id;
-    pthread_create(&thread_id, NULL, run(activo), NULL);
+    pthread_create(&thread_id, NULL, run, &activo);
     if(activo){
         printf("Thread prueba\n");
     }
