@@ -11,7 +11,7 @@
 typedef struct{
    struct nodo* siguiente;
    //Anadir un espacio mas para el PID
-   int info[2];
+   int info[3];
 
 }nodo;
 
@@ -23,15 +23,18 @@ void agregar(char *datos){
    dato->siguiente = NULL;
    dato->info[0] = 0;
    dato->info[1] = 0;
+   dato->info[2] = 0;
    char *separador = ",";
    char *token = strtok(datos,separador);
    if(token != NULL){
       dato->info[0] = atoi(token);
+      int cont = 1;
       while (token != NULL)
       {
          token = strtok(NULL,separador);
          if(token != NULL){
-            dato->info[1] = atoi(token);
+            dato->info[cont] = atoi(token);
+            cont++;
          }else{
          }
       }
@@ -125,10 +128,38 @@ void mostrarLista(){
    nodo* i = primero;
    while(i != NULL){
       printf("%i  ,", i->info[0]);
-      printf("%i  \n", i->info[1]);
+      printf("%i  ,", i->info[1]);
+      printf("%i  \n", i->info[2]);
       i = i->siguiente;
    }
 
+}
+
+int getPosNextProcess(bool isSJF){
+   nodo* aux = primero->siguiente;
+   if(aux == NULL){
+      return 0;
+   }
+   int elemento;
+   if(isSJF){
+      elemento = 0;
+   }else{
+      elemento = 1;
+   }
+   int pos = 1;
+   int process = primero->info[elemento];
+   int processPos = 0;
+   int largo = largoLista();
+   while (pos < largo)
+   {
+      if(process > aux->info[elemento]){
+         process = aux->info[elemento];
+         processPos = pos;
+      }
+      aux = aux->siguiente;
+      pos++;
+   }
+   return processPos;
 }
 
 void liberarLista(){
@@ -150,20 +181,22 @@ void liberarLista(){
 
 /*int main() {
    printf("Largo de la lista: %d\n", largoLista());
-   agregar("1");
+   agregar("7");
    printf("Largo de la lista: %d\n", largoLista());
    mostrarLista();
    // si se quiere agregar datos separados por coma, por algun motivo tiene que ser mediante un array
-   char datos[] = "2,7";
+   char datos[] = "3,7,1";
    agregar(datos);
    printf("Largo de la lista: %d\n", largoLista());
    mostrarLista();
-   char datos2[] = "3,1";
+   char datos2[] = "4,1,2";
    agregar(datos2);
    mostrarLista();
    printf("Largo de la lista: %d\n", largoLista());
-   eliminar(0);
-   eliminar(0);
+   int otraprueba = getPosNextProcess(true);
+   printf("Pos: %d\n", otraprueba);
+   eliminar(1);
+   //eliminar(0);
    printf("Largo de la lista: %d\n", largoLista());
    mostrarLista();
    nodo *prueba = getElemento(0);
@@ -172,6 +205,7 @@ void liberarLista(){
    printf("Prueba de getElemento: %d\n", prueba->info[0]);
    prueba = getPrimero();
    printf("Prueba de getElemento: %d\n", prueba->info[0]);
+   prueba = NULL;
    free(prueba);
    liberarLista();
 	return 0;
