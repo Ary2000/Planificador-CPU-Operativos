@@ -3,6 +3,7 @@
 #include <pthread.h>
 #include <string.h>
 #include <ctype.h>
+#include <stdbool.h>
 
 int burstMenor;
 int burstMayor;
@@ -119,9 +120,28 @@ int clienteManual(){
 }
 
 int main(){
-    //Crear menu de seleccion
     srand(time(NULL));
-    //clienteManual();
-    clienteAutomatico();
+    //Crear menu de seleccion
+    bool seleccion = true;
+    while(seleccion) {
+        printf("Seleccionar cual tipo de cliente se quiere correr\n1. Cliente manual\n2. Cliente Automatico\n");
+        char character = getchar();
+        switch (character)
+        {
+        case '1':
+            clienteManual();
+            seleccion = false;
+            break;
+
+        case '2':
+            clienteAutomatico();
+            seleccion = false;
+            break;
+
+        default:
+            printf("\n\n\n\n\n\n\nPor favor insertar uno de los numeros presentes\n");
+            break;
+        }
+    }
     return 0;
 }
