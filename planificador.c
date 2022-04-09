@@ -116,6 +116,7 @@ void eliminar(int pos){
             }
             aux->siguiente = NULL;
             free(aux);
+            break;
          }
          prev = aux;
          aux = aux->siguiente;

@@ -27,6 +27,7 @@ void *RR(void* arg){
                 sleep(proceso->info[0]);
                 proceso = NULL;
                 eliminar(contador);
+                contador--;
                 printf("Elimino correctamente\n");
             }else{
                 sleep(quantum);
