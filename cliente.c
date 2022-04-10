@@ -177,10 +177,11 @@ int clienteManual(){
     while((read = getline(&linea, &len, archivoProcesos)) != -1) {
         //printf("Linea: %s\n", linea);
         pthread_create(&threadClienteManual, NULL, hiloClienteManual,(void *) linea);
-        pthread_join(threadClienteManual, NULL);
         sleep(rand() % 5 + 3);
     }
-
+    pthread_join(threadClienteManual, NULL);
+    while((getchar())!='\n');
+    stop(); // termina la conexion con el servidor
 
     fclose(archivoProcesos);
     if(linea)
