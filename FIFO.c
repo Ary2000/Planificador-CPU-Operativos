@@ -2,15 +2,15 @@
 #include <stdbool.h>
 #include <pthread.h>
 #include <unistd.h>
-#include "planificador.c"
+//#include "planificador.c"
 
-void *run(void* arg){
+void *FIFO(void* arg){
     bool* activo = (bool *)arg;
     while(*activo){
         printf("En el while\n");
         if(largoLista() == 0){
             sleep(1);
-            *activo = false;
+            //*activo = false;
         }else{
             nodo* first = getPrimero();
             printf("%i  ,", first->info[0]);
@@ -23,6 +23,7 @@ void *run(void* arg){
     }
 }
 
+/*
 int main(){
     char datos[] = "2,7";
     agregar(datos);
@@ -30,11 +31,11 @@ int main(){
     agregar(datos2);
     bool *activo = true;
     pthread_t thread_id;
-    pthread_create(&thread_id, NULL, run, &activo);
+    pthread_create(&thread_id, NULL, FIFO, &activo);
     if(activo){
         printf("Thread prueba\n");
     }
     pthread_join(thread_id, NULL);
     free(activo);
     return 0;
-}
+}*/

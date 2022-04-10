@@ -8,6 +8,13 @@
 void *myfunc (void *myvar);
 
 
+int estadoHilo = 1;
+
+void stop(void){
+    estadoHilo = 0;
+}
+
+
 int main(int argc, char *argv[])
 {
 	pthread_t thread1,thread2;
@@ -37,7 +44,8 @@ void *myfunc(void *myvar)
 	char *msg;
 	msg = (char *) myvar;
 	int i = 0;
-	while(1){
+	//stop();
+	while(estadoHilo){
 		printf("%s %d\n", msg, i);
 		sleep(1);
 		i = i + 1;

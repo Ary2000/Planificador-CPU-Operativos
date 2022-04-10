@@ -2,7 +2,7 @@
 #include <stdbool.h>
 #include <pthread.h>
 #include <unistd.h>
-#include "planificador.c"
+//#include "planificador.c"
 
 void *HPF(void* arg){
     bool* activo = (bool *)arg;
@@ -11,7 +11,7 @@ void *HPF(void* arg){
         printf("En el while\n");
         if(largoLista() == 0){
             sleep(1);
-            *activo = false;
+            //*activo = false;
         }else{
             int posProceso = getPosNextProcess(false);
             proceso = getElemento(posProceso);
@@ -26,6 +26,7 @@ void *HPF(void* arg){
     }
 }
 
+/*
 int main(){
     char datos[] = "4,2,1";
     agregar(datos);
@@ -42,4 +43,4 @@ int main(){
     pthread_join(thread_id, NULL);
     free(activo);
     return 0;
-}
+}*/

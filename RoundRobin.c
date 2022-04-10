@@ -2,7 +2,7 @@
 #include <stdbool.h>
 #include <pthread.h>
 #include <unistd.h>
-#include "planificador.c"
+//#include "planificador.c"
 
 int quantum = 4;
 
@@ -14,7 +14,7 @@ void *RR(void* arg){
         printf("En el while\n");
         if(largoLista() == 0){
             sleep(1);
-            *activo = false;
+            //*activo = false;
         }else{
             if(contador >= largoLista()){
                 contador = 0;
@@ -43,6 +43,7 @@ void *RR(void* arg){
 void setQuantum(int q){
     quantum = q;
 }
+/*
 
 int main(){
     char datos[] = "5,7,0";
@@ -63,4 +64,4 @@ int main(){
     pthread_join(thread_id, NULL);
     free(activo);
     return 0;
-}
+}*/
