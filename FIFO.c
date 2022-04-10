@@ -11,10 +11,10 @@ void *FIFO(void* arg){
             sleep(1);
         }else{
             nodo* first = getPrimero();
-            printf("%i  ,", first->info[0]);
-            printf("%i,", first->info[1]);
-            printf("%i\n", first->info[2]);
             sleep(first->info[1]);
+            printf("[PID: %i,", first->info[0]);
+            printf("BURST: %i,", first->info[1]);
+            printf("PRIORIDAD: %i]\n", first->info[2]);
             eliminar(0);
 
         }

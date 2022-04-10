@@ -20,4 +20,5 @@ int main(){
     time_t end = time(NULL);
     printf("El tiempo transcurrido es: %d\n", end-*inicio);
     return 0;
+
 }

@@ -11,7 +11,7 @@ void *RR(void* arg){
     int contador = 0;
     nodo* proceso;
     while(*activo){
-        printf("En el while\n");
+        //printf("En el while\n");
         if(largoLista() == 0){
             sleep(1);
             //*activo = false;
@@ -20,18 +20,18 @@ void *RR(void* arg){
                 contador = 0;
             }
             proceso = getElemento(contador);
-            printf("%i  ,", proceso->info[0]);
-            printf("%i  ,", proceso->info[1]);
-            printf("%i\n", proceso->info[2]);
-            if(proceso->info[0] <= quantum){
-                sleep(proceso->info[0]);
+            if(proceso->info[1] <= quantum){
+                sleep(proceso->info[1]);
+                printf("[PID: %i,", proceso->info[0]);
+                printf("BURST: %i,", proceso->info[1]);
+                printf("PRIORIDAD: %i]\n", proceso->info[2]);
                 proceso = NULL;
                 eliminar(contador);
                 contador--;
                 printf("Elimino correctamente\n");
             }else{
                 sleep(quantum);
-                proceso->info [0] = proceso->info [0] - quantum;
+                proceso->info [1] = proceso->info [1] - quantum;
             }
             contador = contador + 1;
         }

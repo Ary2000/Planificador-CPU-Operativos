@@ -10,6 +10,7 @@
 #include <netinet/in.h>
 #include <arpa/inet.h> 
 
+// 192.168.0.20 Isaac
 #define SERVER_ADDRESS  "192.168.0.15"     /* server IP */
 #define PORT            8080 
 

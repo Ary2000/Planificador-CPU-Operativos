@@ -8,19 +8,19 @@ void *SJF(void* arg){
     bool* activo = (bool *)arg;
     nodo* proceso;
     while(*activo){
-        printf("En el while\n");
+        //printf("En el while\n");
         if(largoLista() == 0){
             sleep(1);
             //*activo = false;
         }else{
             int posProceso = getPosNextProcess(true);
             proceso = getElemento(posProceso);
-            printf("En el while\n");
-            printf("%i  ,", proceso->info[0]);
-            printf("%i  ,", proceso->info[1]);
-            printf("%i\n", proceso->info[2]);
-            sleep(proceso->info[0]);
-            printf("Vuelta\n");
+            //printf("En el while\n");
+            sleep(proceso->info[1]);
+            printf("[PID: %i,", proceso->info[0]);
+            printf("BURST: %i,", proceso->info[1]);
+            printf("PRIORIDAD: %i]\n", proceso->info[2]);
+            //printf("Vuelta\n");
             eliminar(posProceso);
         }
     }

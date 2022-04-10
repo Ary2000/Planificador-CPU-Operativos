@@ -128,12 +128,12 @@ void eliminar(int pos){
 void mostrarLista(){
    nodo* i = primero;
    while(i != NULL){
-      printf("%i  ,", i->info[0]);
-      printf("%i  ,", i->info[1]);
-      printf("%i  \n", i->info[2]);
+      printf("[%i,", i->info[0]);
+      printf("%i,", i->info[1]);
+      printf("%i]->", i->info[2]);
       i = i->siguiente;
    }
-
+   printf("\n");
 }
 
 int getPosNextProcess(bool isSJF){
@@ -143,9 +143,9 @@ int getPosNextProcess(bool isSJF){
    }
    int elemento;
    if(isSJF){
-      elemento = 0;
-   }else{
       elemento = 1;
+   }else{
+      elemento = 2;
    }
    int pos = 1;
    int process = primero->info[elemento];
