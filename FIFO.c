@@ -7,16 +7,14 @@
 void *FIFO(void* arg){
     bool* activo = (bool *)arg;
     while(*activo){
-        printf("En el while\n");
         if(largoLista() == 0){
             sleep(1);
-            //*activo = false;
         }else{
             nodo* first = getPrimero();
             printf("%i  ,", first->info[0]);
-            printf("%i\n", first->info[1]);
-            sleep(first->info[0]);
-            printf("Vuelta\n");
+            printf("%i,", first->info[1]);
+            printf("%i\n", first->info[2]);
+            sleep(first->info[1]);
             eliminar(0);
 
         }

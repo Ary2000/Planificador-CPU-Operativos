@@ -189,7 +189,7 @@ int main(int argc, char* argv[])
     else{
     	printf("Error al ingresar parametro\n Porfavor ingrese un parametro: ./servidor parametro \n siendo parametro(FIFO,SJF,HPF,RoundRobin)");
     }
-    free(activo);
+    //free(activo);
     pthread_join(thread_id, NULL);
     pthread_join(threadJobScheduler,NULL); //Termina la ejecucion del hilo de cliente
     pthread_join(threadConexionServidor,NULL);

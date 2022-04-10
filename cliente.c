@@ -142,10 +142,10 @@ void clienteAutomatico() {
 
     pthread_t thread_id;
     pthread_create(&thread_id, NULL, creadorThreads, NULL);
-    //getchar();
+    getchar();
     terminarCiclo = 1;
     pthread_join(thread_id, NULL);
-    //stop(); // termina la conexion con el servidor
+    stop(); // termina la conexion con el servidor
 }
 
 // Funcion que se encarga de manegar el cliente si este selecciona leer
