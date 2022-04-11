@@ -16,7 +16,8 @@ void *FIFO(void* arg){
             printf("BURST: %i,", first->info[1]);
             printf("PRIORIDAD: %i]\n", first->info[2]);
             eliminar(0);
-
+            printf("TAT: %i\n", (first->finish - first->star));
+            free(first);
         }
     }
 }

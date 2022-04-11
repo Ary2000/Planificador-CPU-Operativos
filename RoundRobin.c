@@ -20,18 +20,19 @@ void *RR(void* arg){
                 contador = 0;
             }
             proceso = getElemento(contador);
-            if(proceso->info[1] <= quantum){
-                sleep(proceso->info[1]);
+            if(proceso->info[1] < proceso->tiempoEjecutado + quantum){
+                sleep(proceso->info[1] - proceso->tiempoEjecutado);
                 printf("[PID: %i,", proceso->info[0]);
                 printf("BURST: %i,", proceso->info[1]);
                 printf("PRIORIDAD: %i]\n", proceso->info[2]);
-                proceso = NULL;
+                //proceso = NULL;
                 eliminar(contador);
+                free(proceso);
                 contador--;
                 printf("Elimino correctamente\n");
             }else{
                 sleep(quantum);
-                proceso->info [1] = proceso->info [1] - quantum;
+                proceso->tiempoEjecutado = proceso->tiempoEjecutado + quantum;
             }
             contador = contador + 1;
         }

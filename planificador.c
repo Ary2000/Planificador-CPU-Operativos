@@ -12,6 +12,8 @@ typedef struct{
    struct nodo* siguiente;
    //Anadir un espacio mas para el PID
    int info[3];
+   int tiempoEjecutado;
+   int star, finish;
 
 }nodo;
 
@@ -24,6 +26,8 @@ void agregar(char *datos){
    dato->info[0] = 0;
    dato->info[1] = 0;
    dato->info[2] = 0;
+   dato->tiempoEjecutado = 0;
+   dato->star = time(NULL);
    char *separador = ",";
    char *token = strtok(datos,separador);
    if(token != NULL){
@@ -88,6 +92,7 @@ nodo* getElemento(int pos){
 }
 
 void eliminar(int pos){
+   time_t salida = time(NULL);
    if(primero == NULL){
       return;
    }
@@ -100,7 +105,8 @@ void eliminar(int pos){
          primero = primero->siguiente;
          aux->siguiente = NULL;
       }
-      free(aux);
+      aux->finish = salida;
+      //free(aux);
    }
    else{
       nodo* prev = NULL;
@@ -115,7 +121,8 @@ void eliminar(int pos){
                prev->siguiente = aux->siguiente;
             }
             aux->siguiente = NULL;
-            free(aux);
+            aux->finish = salida;
+            //free(aux);
             break;
          }
          prev = aux;

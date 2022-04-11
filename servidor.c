@@ -27,8 +27,8 @@
 
 /* server parameters */
 #define SERV_PORT       8080              /* port */
-#define SERV_HOST_ADDR "192.168.0.15"     /* IP, only IPV4 support  */
-//#define SERV_HOST_ADDR "192.168.0.20" //Isaac
+//#define SERV_HOST_ADDR "192.168.0.15"     /* IP, only IPV4 support  */
+#define SERV_HOST_ADDR "192.168.0.20" //Isaac
 #define BUF_SIZE        100               /* Buffer rx, tx max size  */
 #define BACKLOG         5                 /* Max. client pending connections  */
 
