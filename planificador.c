@@ -184,6 +184,7 @@ void liberarLista(){
       free(prev);
    }
    ultimo = NULL;
+   free(aux);
 }
 
 

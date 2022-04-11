@@ -1,0 +1,95 @@
+#include <stdio.h>
+#include <math.h>
+#include <stdlib.h>
+#include <stdbool.h>
+#include <time.h>
+#include <string.h>
+#include <stdint.h>
+#include <stddef.h>
+//#include "planificador.c"
+
+typedef struct{
+   struct proceso* siguiente;
+   //Anadir un espacio mas para el PID
+   int info[3];
+   //int star, finish;
+   int TAT, WT;
+}proceso;
+
+proceso* start = NULL;
+proceso* finish = NULL;
+
+void finalizo(nodo *node){
+   proceso* dato = malloc(sizeof(proceso)); //Inicializa el proceso
+   dato->siguiente = NULL;
+   dato->info[0] = node->info[0];
+   dato->info[1] = node->info[1];
+   dato->info[2] = node->info[2];
+   //dato->star = node->star;
+   //dato->finish = node->finish;
+   dato->TAT = node->finish - node->star;
+   dato->WT = dato->TAT - dato->info[1];
+
+   if(start == NULL){
+      start = dato;
+      finish = dato;
+   }
+   else{
+      finish->siguiente = dato;
+      finish = dato;
+   }
+   free(node);
+}
+
+proceso* getStart(){
+   return start;
+}
+
+proceso* getUltimo(){
+   return finish;
+}
+
+proceso* getElemento(int pos){
+   proceso* aux = start;
+   int cont = 0;
+   while (aux != NULL)
+   {
+      if(cont == pos){
+         return aux;
+      }else{
+         aux = aux->siguiente;
+      }
+      cont = cont + 1;
+   }
+   return NULL;
+}
+
+void mostrarEjecutados(){
+   proceso* i = start;
+   while(i != NULL){
+      /*printf("[%i,", i->info[0]);
+      printf("%i,", i->info[1]);
+      printf("%i]->", i->info[2]);*/
+      printf("TAT: %i,", i->TAT);
+      printf("WT: %i\n", i->WT);
+      i = i->siguiente;
+   }
+   printf("\n");
+}
+
+void liberarProcesos(){
+   if(start == NULL){
+      return;
+   }
+   proceso* aux = start;
+   start = NULL;
+   while (aux != finish)
+   {
+      proceso* prev = aux;
+      aux = aux->siguiente;
+      prev->siguiente = NULL;
+      free(prev);
+   }
+   finish = NULL;
+   free(aux);
+}

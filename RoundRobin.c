@@ -27,7 +27,8 @@ void *RR(void* arg){
                 printf("PRIORIDAD: %i]\n", proceso->info[2]);
                 //proceso = NULL;
                 eliminar(contador);
-                free(proceso);
+                finalizo(proceso);
+                //free(proceso);
                 contador--;
                 printf("Elimino correctamente\n");
             }else{

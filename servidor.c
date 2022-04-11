@@ -3,6 +3,7 @@
 #include "HPF.c"
 #include "RoundRobin.c"
 #include "SJF.c"
+#include "ejecutado.c"
 
 /***************************************************************************************/
 /* @file    server_secuencial.c                                                        */

@@ -22,6 +22,7 @@ void *HPF(void* arg){
             printf("PRIORIDAD: %i]\n", proceso->info[2]);
             //printf("Vuelta\n");
             eliminar(posProceso);
+            finalizo(proceso);
         }
     }
 }
