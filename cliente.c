@@ -10,14 +10,14 @@
 #include <netinet/in.h>
 #include <arpa/inet.h> 
 
-#define SERVER_ADDRESS "192.168.0.20" //Isaac
-//#define SERVER_ADDRESS  "192.168.0.15"     /* server IP */
+/*#define SERVER_ADDRESS "192.168.0.20" Isaac*/
+#define SERVER_ADDRESS  "192.168.0.15"     /* server IP */
 #define PORT            8080 
 
 int burstMenor;
 int burstMayor;
 
-char buf_rx[100]; //Variable para almacenar el mensaje obtenido por el servidor
+char buf_rx[400]; //Variable para almacenar el mensaje obtenido por el servidor
 void *hiloConexionCliente();
 void *hiloClienteManual(void *lineaTXT);
 
@@ -82,16 +82,17 @@ void* creadorProcesos() {
     int burst = rand() % (burstMayor - burstMenor) + burstMenor;
     int prioridad = rand() % 5 + 1;
     sleep(2);
-    printf("Burst: %d   Prioridad: %d\n", burst, prioridad);
+    printf("[PROCESS CREATED]: Burst:%d-Prioridad:%d\n", burst, prioridad);
     
 
     //Aqui va el enviar mensaje
-    char buf_tx[50]; 
+    char buf_tx[500]; 
     sprintf(buf_tx, "1,%d,%d", burst, prioridad);
     /* send test sequences*/
     write(cliente_conexion_var, buf_tx, sizeof(buf_tx));     
     read(cliente_conexion_var, buf_rx, sizeof(buf_rx));
-    printf("CLIENT:Received: %s \n", buf_rx); 
+    printf("%s\n", buf_rx); 
+    printf("[Finished Process]\n");
 }
 
 // Automatico
@@ -145,8 +146,8 @@ void clienteAutomatico() {
     pthread_create(&thread_id, NULL, creadorThreads, NULL);
     getchar();
     terminarCiclo = 1;
+    stop();
     pthread_join(thread_id, NULL);
-    stop(); // termina la conexion con el servidor
 }
 
 // Funcion que se encarga de manegar el cliente si este selecciona leer
@@ -174,16 +175,21 @@ int clienteManual(){
         printf("Archivo no se puede encontrar\n");
         return -1;
     }
-    pthread_t threadClienteManual;
+    pthread_t threadClienteManual[200];
+    int j = 0;
     while((read = getline(&linea, &len, archivoProcesos)) != -1) {
-        //printf("Linea: %s\n", linea);
-        pthread_create(&threadClienteManual, NULL, hiloClienteManual,(void *) linea);
+        pthread_t threadClienteManual2;
+        pthread_create(&threadClienteManual2, NULL, hiloClienteManual,(void *) linea);
+        threadClienteManual[j] = threadClienteManual2;
+        j = j + 1;
         sleep(rand() % 5 + 3);
     }
-    pthread_join(threadClienteManual, NULL);
-    while((getchar())!='\n');
+    for (int i = 0; i < j; ++i)
+    {
+        pthread_join(threadClienteManual[i], NULL);
+    }
+    printf("hola\n");
     stop(); // termina la conexion con el servidor
-
     fclose(archivoProcesos);
     if(linea)
         free(linea);
@@ -192,24 +198,18 @@ int clienteManual(){
 
 void *hiloClienteManual(void *lineaTXT)
 {
-    char vacio[] = "";
     char *linea;
     linea = (char *) lineaTXT;
     sleep(2);
     //Aqui va el enviar mensaje
-    char buf_tx[50]; 
+    char buf_tx[500]; 
     sprintf(buf_tx, "1,%s",linea);
-    sprintf(buf_rx, "%s",vacio);
-    /* send test sequences*/
-    while(1){
-        sleep(2);
-        write(cliente_conexion_var, buf_tx, sizeof(buf_tx));     
-        read(cliente_conexion_var, buf_rx, sizeof(buf_rx));
-        printf("CLIENTManual:Received: %s \n", buf_rx);
-        if(strcmp(buf_rx,"")!=0){
-            break;
-        }
-    } 
+    printf("[PROCESS CREATED]: Burst:%c-Prioridad:%c\n",buf_tx[2],buf_tx[4]);
+    write(cliente_conexion_var, buf_tx, sizeof(buf_tx));
+    printf("aquiiiiiiiiiiiiiiiii\n");
+    read(cliente_conexion_var, buf_rx, sizeof(buf_rx));
+    printf("aquiiiiiiiiiiiiiiii2\n");  
+    printf("CLIENTManual:Received: %s \n", buf_rx);
     return NULL;   
 }
 

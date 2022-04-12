@@ -19,6 +19,12 @@ typedef struct{
 proceso* start = NULL;
 proceso* finish = NULL;
 
+int tiempoInicial;
+int tiempoFinal;
+void setInicial(){
+   tiempoInicial = time(NULL);
+}
+
 void finalizo(nodo *node){
    proceso* dato = malloc(sizeof(proceso)); //Inicializa el proceso
    dato->siguiente = NULL;
@@ -45,11 +51,11 @@ proceso* getStart(){
    return start;
 }
 
-proceso* getUltimo(){
+proceso* getUltimoProcesoFinalizado(){
    return finish;
 }
 
-proceso* getElemento(int pos){
+proceso* getElementoProcesoFinalizado(int pos){
    proceso* aux = start;
    int cont = 0;
    while (aux != NULL)
@@ -92,4 +98,55 @@ void liberarProcesos(){
    }
    finish = NULL;
    free(aux);
+}
+
+void lenProcesosEjecutados(){
+   int cont = 0;
+   proceso* i = start;
+   while(i != NULL){
+      cont++;
+      i = i->siguiente;
+   }
+   printf("[Executed processes]: %d\n",cont);
+}
+void cpuOcioso(){
+   tiempoFinal = time(NULL);
+   int sumBurst = 0;
+   int total = 0;
+   proceso* i = start;
+   while(i != NULL){
+      sumBurst = sumBurst + i->info[1];
+      i = i->siguiente;
+   }
+   total = (tiempoFinal - tiempoInicial) - sumBurst;
+   printf("Cantidad de segundos con CPU ocioso: %d\n",total);
+   
+}
+void tablaTAT_WT(){
+   proceso* i = start;
+   printf("---------------------------\n");
+   printf("-------TABLA TAT Y WT------\n");
+   printf("---------------------------\n");
+   while(i != NULL){
+      printf("---PID:%d TAT: %d WT: %d---\n",i->info[0],i->TAT,i->WT);
+      i = i->siguiente;
+   }
+   printf("---------------------------\n");
+   
+}
+void promedioTAT_WT(){
+   int cont = 0;
+   int sumTAT = 0;
+   int sumWT = 0;
+   double promedioTAT,promedioWT;
+   proceso* i = start;
+   while(i != NULL){
+      cont++;
+      sumTAT = sumTAT + i->TAT;
+      sumWT  = sumWT  + i->WT;
+      i = i->siguiente;
+   }
+   promedioTAT = sumTAT / cont;
+   promedioWT = sumWT / cont;
+   printf("Promedio Turn Around Time: %f -- Promedio Waiting Time: %f\n",promedioTAT,promedioWT);
 }

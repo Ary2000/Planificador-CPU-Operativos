@@ -1,9 +1,10 @@
 #include "planificador.c"
+#include "ejecutado.c"
 #include "FIFO.c"
 #include "HPF.c"
 #include "RoundRobin.c"
 #include "SJF.c"
-#include "ejecutado.c"
+
 
 /***************************************************************************************/
 /* @file    server_secuencial.c                                                        */
@@ -27,14 +28,15 @@
 #include <string.h> 
 
 /* server parameters */
+/* IP, only IPV4 support  */
+/*#define SERV_HOST_ADDR "192.168.0.20"*/
 #define SERV_PORT       8080              /* port */
-//#define SERV_HOST_ADDR "192.168.0.15"     /* IP, only IPV4 support  */
-#define SERV_HOST_ADDR "192.168.0.20" //Isaac
-#define BUF_SIZE        100               /* Buffer rx, tx max size  */
+#define SERV_HOST_ADDR "192.168.0.15"     
+#define BUF_SIZE        500               /* Buffer rx, tx max size  */
 #define BACKLOG         5                 /* Max. client pending connections  */
 
 
-
+int varPid = 0;
 int  len_rx, len_tx = 0;                     /* received and sent length, in bytes */
 char buff_tx[BUF_SIZE];
 char buff_rx[BUF_SIZE];   /* buffers for reception  */
@@ -87,7 +89,7 @@ int encenderServidorPrincipal()
     } 
     else
     {
-        printf("[SERVER]: Listening on SERV_PORT %d \nPara terminar la conexion dar ENTER\n\n", ntohs(servaddr.sin_port) ); 
+        printf("[SERVER]: Listening on SERV_PORT %d \n", ntohs(servaddr.sin_port) ); 
     }
     
     len = sizeof(client); 
@@ -148,15 +150,16 @@ int largo_cadena(char cadena[])
 }
 
 void *jobScheduler(){
-	char mensaje[50];
+	char mensaje[500];
 	char vacio[10]="";
 	while(1){
 		//Si el buffer de lectura es diferente a vacio
 		if(strcmp(buff_rx,"")!=0){
 			agregar(buff_rx);
-            printf("Cola del Ready: ");
-            mostrarLista();
-			sprintf(mensaje,"La lista tiene un largo de %d \n", largoLista());
+            nodo* varAux = getUltimo();
+            varAux->info[0] = varPid;
+            varPid = varPid+1;
+			sprintf(mensaje,"[NOTIFICATION]: received process PCB:{pid: %d, burst: %d, prioridad: %d, tiempoInicial: %d, tiempoFinal: %d, tiempoEjecutado: %d}",varAux->info[0],varAux->info[1],varAux->info[2],varAux->star,varAux->finish,varAux->tiempoEjecutado);
 			enviarMensaje(mensaje);
 			sprintf(buff_rx,"%s",vacio);
 		}
@@ -164,9 +167,32 @@ void *jobScheduler(){
 	return NULL; 
 }
 
+void *hiloMenu(){
+    printf("1.COLA DEL READY\n");
+    printf("2.TERMINAR EJECUCION\n");
+    int numTeclado;
+    while(1){
+        scanf("%d",&numTeclado);
+        //printf("%d\n", numTeclado);
+        if(numTeclado==1){
+            printf("holaaa\n");
+            mostrarLista();
+        }
+        if(numTeclado==2){
+            lenProcesosEjecutados();
+            cpuOcioso();
+            tablaTAT_WT();
+            promedioTAT_WT();
+            exit(EXIT_SUCCESS);
+        }
+    }
+    return NULL;
+}
+
 int main(int argc, char* argv[])          
 {
-	pthread_t threadConexionServidor,threadJobScheduler;
+    setInicial();
+	pthread_t threadConexionServidor,threadJobScheduler,threadMenu;
     pthread_create(&threadConexionServidor, NULL, hiloConexionServidor, NULL);
     pthread_create(&threadJobScheduler, NULL, jobScheduler, NULL);
     //algoritmos
@@ -175,26 +201,30 @@ int main(int argc, char* argv[])
     if(strcmp(argv[1],"FIFO") == 0){
     	printf("...FIFO...\n");
 	    pthread_create(&thread_id, NULL, FIFO, &activo);
+        pthread_create(&threadMenu, NULL, hiloMenu, NULL);
     }
     else if(strcmp(argv[1],"SJF") == 0){
     	printf("...SJF...\n");
-	    pthread_create(&thread_id, NULL, SJF, &activo);	   
+	    pthread_create(&thread_id, NULL, SJF, &activo);
+        pthread_create(&threadMenu, NULL, hiloMenu, NULL);	   
     }
     else if(strcmp(argv[1],"HPF") == 0){
     	printf("...HPF...\n");
 	    pthread_create(&thread_id, NULL, HPF, &activo);
+        pthread_create(&threadMenu, NULL, hiloMenu, NULL);
     }
     else if(strcmp(argv[1],"RoundRobin") == 0){
     	printf("...Round Robin...\n");
 	    setQuantum(3);
 	    pthread_create(&thread_id, NULL, RR, &activo);
+        pthread_create(&threadMenu, NULL, hiloMenu, NULL);
     }
     else{
     	printf("Error al ingresar parametro\n Porfavor ingrese un parametro: ./servidor parametro \n siendo parametro(FIFO,SJF,HPF,RoundRobin)");
     }
-    //free(activo);
-    pthread_join(thread_id, NULL);
-    pthread_join(threadJobScheduler,NULL); //Termina la ejecucion del hilo de cliente
     pthread_join(threadConexionServidor,NULL);
+    pthread_join(threadJobScheduler,NULL); //Termina la ejecucion del hilo de cliente
+    pthread_join(thread_id, NULL);
+    pthread_join(threadMenu, NULL);
 	return 0;
 } 

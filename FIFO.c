@@ -18,7 +18,6 @@ void *FIFO(void* arg){
             eliminar(0);
             //printf("TAT: %i\n", (first->finish - first->star));
             finalizo(first);
-            free(first);
         }
     }
 }
