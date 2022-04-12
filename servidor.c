@@ -124,7 +124,7 @@ int encenderServidorPrincipal()
                 else
                 {
                     write(connfd, buff_tx, strlen(buff_tx));
-                    printf("[SERVER]: %s \n", buff_rx);
+                    //printf("[SERVER]: %s \n", buff_rx);
                 }            
             }  
         }                      
@@ -173,9 +173,8 @@ void *hiloMenu(){
     int numTeclado;
     while(1){
         scanf("%d",&numTeclado);
-        //printf("%d\n", numTeclado);
         if(numTeclado==1){
-            printf("holaaa\n");
+            printf("Cola del Ready: ");
             mostrarLista();
         }
         if(numTeclado==2){

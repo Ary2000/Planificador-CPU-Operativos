@@ -188,7 +188,6 @@ int clienteManual(){
     {
         pthread_join(threadClienteManual[i], NULL);
     }
-    printf("hola\n");
     stop(); // termina la conexion con el servidor
     fclose(archivoProcesos);
     if(linea)
@@ -206,10 +205,8 @@ void *hiloClienteManual(void *lineaTXT)
     sprintf(buf_tx, "1,%s",linea);
     printf("[PROCESS CREATED]: Burst:%c-Prioridad:%c\n",buf_tx[2],buf_tx[4]);
     write(cliente_conexion_var, buf_tx, sizeof(buf_tx));
-    printf("aquiiiiiiiiiiiiiiiii\n");
-    read(cliente_conexion_var, buf_rx, sizeof(buf_rx));
-    printf("aquiiiiiiiiiiiiiiii2\n");  
-    printf("CLIENTManual:Received: %s \n", buf_rx);
+    read(cliente_conexion_var, buf_rx, sizeof(buf_rx)); 
+    printf("%s\n", buf_rx);
     return NULL;   
 }
 
@@ -225,12 +222,28 @@ void *hiloConexionCliente()
     close(cliente_conexion);
     return NULL;
 }
- 
+
+void *hiloTerminar(){
+    printf("-------------------------------------------\n");
+    printf("--- PRESIONAR 3 PARA TERMINAR EJECUCION ---\n");
+    printf("-------------------------------------------\n");
+    int numTeclado;
+    while(1){
+        scanf("%d",&numTeclado);
+        if(numTeclado==3){
+            //stop();
+            exit(EXIT_SUCCESS);
+        }
+    }
+    return NULL;
+
+}  
 
 int main(){
     srand(time(NULL));
-    pthread_t threadConexionCliente;
+    pthread_t threadConexionCliente,threadTerminar;
     pthread_create(&threadConexionCliente, NULL, hiloConexionCliente, NULL); 
+    pthread_create(&threadTerminar, NULL, hiloTerminar, NULL);
     //Crear menu de seleccion
     bool seleccion = true;
     while(seleccion) {
@@ -255,6 +268,7 @@ int main(){
         }
     }
     pthread_join(threadConexionCliente,NULL); //Termina la ejecucion del hilo de cliente
+    pthread_join(threadTerminar,NULL);
     return 0;
 }
 

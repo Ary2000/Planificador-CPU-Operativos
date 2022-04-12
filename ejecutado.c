@@ -128,7 +128,7 @@ void tablaTAT_WT(){
    printf("-------TABLA TAT Y WT------\n");
    printf("---------------------------\n");
    while(i != NULL){
-      printf("---PID:%d TAT: %d WT: %d---\n",i->info[0],i->TAT,i->WT);
+      printf("--- PID: %d - TAT: - %d WT: %d ---\n",i->info[0],i->TAT,i->WT);
       i = i->siguiente;
    }
    printf("---------------------------\n");

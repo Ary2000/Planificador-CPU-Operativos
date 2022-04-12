@@ -15,8 +15,12 @@ void *SJF(void* arg){
         }else{
             int posProceso = getPosNextProcess(true);
             proceso = getElemento(posProceso);
-            //printf("En el while\n");
+            printf("Entra a ejecucion: ");
+            printf("[PID: %i,", proceso->info[0]);
+            printf("BURST: %i,", proceso->info[1]);
+            printf("PRIORIDAD: %i]\n", proceso->info[2]);
             sleep(proceso->info[1]);
+            printf("Termina ejecucion: ");
             printf("[PID: %i,", proceso->info[0]);
             printf("BURST: %i,", proceso->info[1]);
             printf("PRIORIDAD: %i]\n", proceso->info[2]);

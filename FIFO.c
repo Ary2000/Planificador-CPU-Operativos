@@ -11,7 +11,12 @@ void *FIFO(void* arg){
             sleep(1);
         }else{
             nodo* first = getPrimero();
+            printf("Entra en ejecucion: ");
+            printf("[PID: %i,", first->info[0]);
+            printf("BURST: %i,", first->info[1]);
+            printf("PRIORIDAD: %i]\n", first->info[2]);
             sleep(first->info[1]);
+            printf("Termina ejecucion: ");
             printf("[PID: %i,", first->info[0]);
             printf("BURST: %i,", first->info[1]);
             printf("PRIORIDAD: %i]\n", first->info[2]);

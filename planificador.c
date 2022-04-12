@@ -140,6 +140,7 @@ void mostrarLista(){
       printf("%i]->", i->info[2]);
       i = i->siguiente;
    }
+   printf("NULL\n");
    printf("\n");
 }
 
