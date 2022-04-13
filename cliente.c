@@ -203,10 +203,11 @@ void *hiloClienteManual(void *lineaTXT)
     //Aqui va el enviar mensaje
     char buf_tx[500]; 
     sprintf(buf_tx, "1,%s",linea);
-    printf("[PROCESS CREATED]: Burst:%c-Prioridad:%c\n",buf_tx[2],buf_tx[4]);
+    printf("[PROCESS CREATED]: (Burst-Prioridad) %s\n",buf_tx);
     write(cliente_conexion_var, buf_tx, sizeof(buf_tx));
     read(cliente_conexion_var, buf_rx, sizeof(buf_rx)); 
     printf("%s\n", buf_rx);
+    printf("[Finished Process]\n");
     return NULL;   
 }
 
